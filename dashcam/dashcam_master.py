@@ -6,7 +6,8 @@ import time
 import subprocess
 import os
 
-print("dashcam_master Loaded...")
+os.system("echo '\n\e[92mdashcam_master.py Loading...\e[0m'\n")
+os.system("echo ' ' ")
 
 class VideoRecorder():  
     
@@ -15,10 +16,10 @@ class VideoRecorder():
     def __init__(self):
 
         self.open = True
-        self.device_index = 2
-        self.fps = 25               # fps should be the minimum constant rate at which the camera can
+        self.device_index = 0
+        self.fps = 6               # fps should be the minimum constant rate at which the camera can
         self.fourcc = "MJPG"       # capture images (with no decrease in speed over time; testing is required)
-        self.frameSize = (1920,1080) # video formats and sizes also depend and vary according to the camera used
+        self.frameSize = (640,480) # video formats and sizes also depend and vary according to the camera used
         self.video_filename = "temp_video.avi"
         self.video_cap = cv2.VideoCapture(self.device_index)
         self.video_writer = cv2.VideoWriter_fourcc(*self.fourcc)
@@ -87,7 +88,10 @@ class AudioRecorder():
     def __init__(self):
 
         self.open = True
-        self.rate = 44100
+        # 44100 default
+        # 16000 accepted sample rate - c920 Logitech Webcam
+        self.rate = 16000
+        # 1024 default
         self.frames_per_buffer = 1024
         self.channels = 2
         self.format = pyaudio.paInt16
@@ -234,3 +238,17 @@ def file_manager(filename):
 
     if os.path.exists(str(local_path) + "/" + filename + ".avi"):
         os.remove(str(local_path) + "/" + filename + ".avi")
+
+
+
+if __name__== "__main__":
+	
+	filename = "Default_user"
+	file_manager(filename)
+	
+	start_AVrecording(filename)  
+	
+	time.sleep(10)
+	
+	stop_AVrecording(filename)
+	print("Done")
